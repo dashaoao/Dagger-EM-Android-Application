@@ -1,17 +1,20 @@
 package com.dashaoao.dagger_em
 
 import android.app.Application
-import com.dashaoao.home.di.HomeDepsProvider
-import com.dashaoao.dagger_em.di.DaggerAppComponent
-import com.dashaoao.home.di.HomeDeps
+import com.dashaoao.core.di.AppDependencies
+import com.dashaoao.core.di.AppDependenciesProvider
+import com.dashaoao.dagger_em.di.AppComponent
 
 class App : Application(),
-    HomeDepsProvider {
-    private val appComponent by lazy {
-        DaggerAppComponent.factory().create(applicationContext)
+    AppDependenciesProvider {
+    private lateinit var appComponent: AppDependencies
+
+    override fun onCreate() {
+        super.onCreate()
+        appComponent = AppComponent.init(this)
     }
 
-    override fun getHomeDeps(): HomeDeps {
-        return appComponent.getHomeDeps()
+    override fun provide(): AppDependencies {
+        return appComponent
     }
 }

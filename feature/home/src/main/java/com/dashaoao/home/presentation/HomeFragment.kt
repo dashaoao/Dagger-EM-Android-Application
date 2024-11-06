@@ -10,7 +10,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.dashaoao.core.di.AppViewModelFactory
+import com.dashaoao.core.di.AppDependenciesProvider
+import com.dashaoao.core.di.app.AppViewModelFactory
 import com.dashaoao.home.databinding.HomeFragmentLayoutBinding
 import com.dashaoao.home.di.HomeComponent
 import kotlinx.coroutines.launch
@@ -30,7 +31,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        HomeComponent.init(requireContext().applicationContext)
+        HomeComponent.init((requireActivity().application as AppDependenciesProvider).provide())
             .inject(this)
     }
 

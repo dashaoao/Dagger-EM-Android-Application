@@ -1,32 +1,36 @@
 package com.dashaoao.dagger_em.di
 
-import android.content.Context
-import com.dashaoao.core.di.First
-import com.dashaoao.core.di.Second
-import com.dashaoao.home.di.HomeDepsModule
-import com.dashaoao.home.di.HomeDeps
-import dagger.BindsInstance
+import com.dashaoao.core.di.app.AppContextProvider
+import com.dashaoao.core.di.AppDependencies
+import com.dashaoao.core.di.app.CoreComponent
+import com.dashaoao.core.di.network.NetworkComponent
+import com.dashaoao.core.di.network.NetworkProvider
+import com.dashaoao.dagger_em.App
 import dagger.Component
-import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Singleton
 @Component(
-    modules = [NetworkModule::class, HomeDepsModule::class]
+    dependencies = [AppContextProvider::class, NetworkProvider::class]
 )
-interface AppComponent {
-    @First
-    fun getRetrofitFirst(): Retrofit
+interface AppComponent : AppDependencies {
 
-    @Second
-    fun getRetrofitSecond(): Retrofit
-
-    fun getHomeDeps(): HomeDeps
+    companion object {
+        fun init(app: App): AppDependencies {
+            return DaggerAppComponent
+                .factory()
+                .create(
+                    CoreComponent.init(app),
+                    NetworkComponent.init()
+                )
+        }
+    }
 
     @Component.Factory
     interface Factory {
         fun create(
-            @BindsInstance context: Context
+            appContextProvider: AppContextProvider,
+            networkProvider: NetworkProvider
         ): AppComponent
     }
 }

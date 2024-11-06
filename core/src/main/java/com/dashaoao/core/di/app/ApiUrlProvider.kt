@@ -1,4 +1,4 @@
-package com.dashaoao.core.di
+package com.dashaoao.core.di.app
 
 interface ApiUrlProvider {
     var url: String

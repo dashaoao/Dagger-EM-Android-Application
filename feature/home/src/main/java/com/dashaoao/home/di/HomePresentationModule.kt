@@ -2,7 +2,7 @@ package com.dashaoao.home.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dashaoao.core.di.AppViewModelFactory
+import com.dashaoao.core.di.app.AppViewModelFactory
 import com.dashaoao.home.presentation.HomeViewModel
 import dagger.Binds
 import dagger.MapKey

@@ -1,4 +1,4 @@
-package com.dashaoao.core.di
+package com.dashaoao.core.di.app
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

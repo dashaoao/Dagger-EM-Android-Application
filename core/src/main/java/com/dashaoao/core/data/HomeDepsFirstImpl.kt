@@ -1,28 +1,20 @@
-package com.dashaoao.core.di
+package com.dashaoao.core.data
 
-import dagger.Module
-import dagger.Provides
+import com.dashaoao.core.di.app.ApiUrlProvider
+import com.dashaoao.core.domain.HomeDeps
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
-@Module
-class CoreModule {
-
-    @Provides
-    @First
-    @Core
-    fun provideRetrofitFirst(): Retrofit {
-        return getRetrofit()
-    }
-
-    @Provides
-    @Second
-    @Core
-    fun provideRetrofitSecond(): Retrofit {
-        return getRetrofit()
-    }
+class HomeDepsFirstImpl @Inject constructor() : HomeDeps {
+    override fun getRetrofit(): Retrofit = Retrofit
+        .Builder()
+        .baseUrl(getApiUrlProvider().url)
+        .client(getHttpClient())
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
     private fun getApiUrlProvider(): ApiUrlProvider = ApiUrlProvider.ApiUrlProviderImpl()
 
@@ -32,16 +24,8 @@ class CoreModule {
         }
     }
 
-    private fun getRetrofit(): Retrofit = Retrofit
-        .Builder()
-        .baseUrl(getApiUrlProvider().url)
-        .client(getHttpClient())
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
     private fun getHttpClient(): OkHttpClient = OkHttpClient
         .Builder()
         .addInterceptor(getHttpLoggingInterceptor())
         .build()
-
 }
